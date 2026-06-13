@@ -9,12 +9,22 @@
     <h1>Let's chat!</h1>
 
     <script>
-
+        // window.location.host returns the current host and port of the website. 
+        // In my project, the host is 127.0.0.1:8000
+        // host name identifies the machine, port identifies the application that is listening
+        // ws: represents Web Socket protocol
+        // In production, we use wss: protocol (Secure WebSocket)
         let url = `ws://${window.location.host}/ws/socket-server/`
 
+        // Creates a websocket connection
+        // Tells browser to open ws connection to server at this URL
+        // request sent to routing and consumer object is created and calls connect() inside it
         const chatSocket = new WebSocket(url)
 
+        // Runs whenever the server sends a msg through the ws
+        // e inside function is an event object, contains information about the received message
         chatSocket.onmessage = function(e) {
+            // The browser receives e.data as a string, we are converting it into JSON (object), so that we can access messages inside it
             let data = JSON.parse(e.data)
             console.log('Data:', data)
         }
