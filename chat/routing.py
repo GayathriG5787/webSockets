@@ -1,8 +1,8 @@
 # path() is used for simple urls, while re_path uses regular expressions for complex URL patterns 
 
-from django.urls import re_path
+from django.urls import path
 from .consumers import ChatConsumer
 
 websocket_urlpatterns = [
-    re_path(r'ws/socket-server/', ChatConsumer.as_asgi())
+    path('ws/socket-server/', ChatConsumer.as_asgi()),
 ]
