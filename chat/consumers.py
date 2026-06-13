@@ -1,4 +1,5 @@
 # Similar to view in WSGI. It handles websocket connection to accept read and send realtime data
+# This is from server side 
 
 import json
 from channels.generic.websocket import WebsocketConsumer
@@ -18,3 +19,12 @@ class ChatConsumer(WebsocketConsumer):
             'type':'connection_established',
             'message':'You are now connected!'
         }))
+        
+    # text_data contains the message sent by the browser
+    def receive(self, text_data):
+        # json.loads() converts JSON string into Python dictionary
+        # json.parse(), used in lobby.html, converts JSON string into JS object
+        text_data_json = json.loads(text_data)
+        message = text_data_json['message']
+        
+        print('Message:', message)

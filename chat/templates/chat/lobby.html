@@ -6,6 +6,8 @@
     <title>Lobby</title>
 </head>
 <body>
+
+    <!-- This file is client side -->
     <h1>Let's chat!</h1>
 
     <!-- action attribute decides where the form data should be sent after its submission -->
@@ -29,6 +31,7 @@
 
         // Runs whenever the server sends a msg through the ws
         // e inside function is an event object, contains information about the received message
+        // Browser receives data from the server
         chatSocket.onmessage = function(e) {
             // The browser receives e.data as a string, we are converting it into object, so that we can access messages inside it
             let data = JSON.parse(e.data)
@@ -41,6 +44,7 @@
             e.preventDefault()
             let message = e.target.message.value
 
+            // Browser sends data to the server
             // JSON.stringify() converts JS object into a JSON string
             chatSocket.send(JSON.stringify({
                 'message': message
