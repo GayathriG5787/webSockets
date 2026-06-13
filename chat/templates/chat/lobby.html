@@ -87,6 +87,15 @@
             background-color: #1d4ed8;
             border-color: #1d4ed8;
         }
+        .my-message {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .other-message {
+            display: flex;
+            justify-content: flex-start;
+        }
     </style>
 </head>
 <body>
@@ -138,6 +147,8 @@
         // In production, we use wss: protocol (Secure WebSocket)
         let url = `ws://${window.location.host}/ws/socket-server/`
 
+        const clientId = crypto.randomUUID();
+
         // Creates a websocket connection
         // Tells browser to open ws connection to server at this URL
         // request sent to routing and consumer object is created and calls connect() inside it
@@ -152,12 +163,22 @@
             console.log('Data:', data)
 
             if (data.type === 'chat'){
+
+                let isMine = data.sender_id === clientId;
+
                 let messages = document.getElementById('messages')
 
                 // beforeend => inside the messages element but as the last child
-                messages.insertAdjacentHTML('beforeend', `<div class="message-bubble animate-fade-in">
-                    <p class="mb-0">${data.message}</p>
-                    </div>`)
+                messages.insertAdjacentHTML(
+                    'beforeend',
+                    `
+                    <div class="${isMine ? 'my-message' : 'other-message'}">
+                        <div class="message-bubble">
+                            <p class="mb-0">${data.message}</p>
+                        </div>
+                    </div>
+                    `
+                );
                 
                 // Auto-scrolls the message panel to the bottom when a new message arrives
                 messages.scrollTop = messages.scrollHeight;
@@ -173,7 +194,8 @@
             // Browser sends data to the server
             // JSON.stringify() converts JS object into a JSON string
             chatSocket.send(JSON.stringify({
-                'message': message
+                'message': message,
+                'sender_id': clientId
             }))
             form.reset()
 

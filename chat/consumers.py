@@ -38,6 +38,7 @@ class ChatConsumer(WebsocketConsumer):
         # json.parse(), used in lobby.html, converts JSON string into JS object
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
+        sender_id = text_data_json['sender_id']
         
         # group_send() just triggers an event, actual sending of messages in done in chat_message fn
         async_to_sync(self.channel_layer.group_send)(
@@ -45,7 +46,8 @@ class ChatConsumer(WebsocketConsumer):
             {
                 # This line automatically calls chat_message fn
                 'type':'chat_message',
-                'message':message
+                'message':message,
+                'sender_id': sender_id
             }
         )
         
@@ -54,7 +56,8 @@ class ChatConsumer(WebsocketConsumer):
         
         self.send(text_data=json.dumps({
             'type': 'chat',
-            'message': message
+            'message': message,
+            'sender_id': event['sender_id']
         }))
         
         # print('Message:', message)
