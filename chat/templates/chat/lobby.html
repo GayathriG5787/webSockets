@@ -16,6 +16,8 @@
         <input type="text" name="message">
     </form>
 
+    <div id="messages"></div>
+
     <script>
         // window.location.host returns the current host and port of the website. 
         // In my project, the host is 127.0.0.1:8000
@@ -36,6 +38,15 @@
             // The browser receives e.data as a string, we are converting it into object, so that we can access messages inside it
             let data = JSON.parse(e.data)
             console.log('Data:', data)
+
+            if (data.type === 'chat'){
+                let messages = document.getElementById('messages')
+
+                // beforeend => inside the messages element but as the last child
+                messages.insertAdjacentHTML('beforeend', `<div>
+                    <p>${data.message}</p>
+                    </div>`)
+            }
         }
 
         let form = document.getElementById('form')
