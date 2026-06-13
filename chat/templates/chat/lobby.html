@@ -4,19 +4,131 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lobby</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #0b0f19;
+        }
+        .chat-container {
+            height: calc(100vh - 40px);
+            max-width: 1000px;
+            margin: 20px auto;
+            background: #111827;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #1f2937;
+        }
+        .chat-header {
+            background-color: #111827;
+            border-bottom: 1px solid #1f2937;
+            padding: 15px 24px;
+        }
+        .messages-box {
+            height: calc(100% - 145px);
+            /* Vertical scrollbar appears */
+            overflow-y: auto;
+            padding: 24px;
+            background-color: #0f172a;
+        }
+        /* Custom sleek scrollbar for dark mode */
+        .messages-box::-webkit-scrollbar {
+            width: 6px;
+        }
+        .messages-box::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        .messages-box::-webkit-scrollbar-thumb {
+            background-color: #374151;
+            border-radius: 3px;
+        }
+        .message-bubble {
+            max-width: 75%;
+            padding: 12px 18px;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            width: fit-content;
+            word-wrap: break-word;
+            color: #f3f4f6;
+        }
+        .input-area {
+            background-color: #111827;
+            border-top: 1px solid #1f2937;
+            padding: 15px 24px;
+        }
+        .input-group .form-control {
+            /* top-left, top-right, bottom-right, bottom-left */
+            border-radius: 24px 0 0 24px;
+            padding-left: 20px;
+            background-color: #1f2937;
+            border-color: #374151;
+            color: #f3f4f6;
+        }
+        .input-group .form-control::placeholder {
+            color: #9ca3af;
+        }
+        .input-group .form-control:focus {
+            box-shadow: none;
+            border-color: #3b82f6;
+            background-color: #1f2937;
+            color: #f3f4f6;
+        }
+        .input-group .btn {
+            border-radius: 0 24px 24px 0;
+            padding-left: 24px;
+            padding-right: 24px;
+            background-color: #2563eb;
+            border-color: #2563eb;
+        }
+        .input-group .btn:hover {
+            background-color: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- This file is client side -->
-    <h1>Let's chat!</h1>
+    <div class="container-fluid px-2 px-sm-3">
+        <div class="chat-container d-flex flex-column">
+            
+            <div class="chat-header d-flex align-items-center">
+                <div class="d-flex align-items-center">
+                    <div class="bg-primary bg-opacity-25 text-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 45px; height: 45px; border: 1px solid rgba(37, 99, 235, 0.4);">
+                        <i class="bi bi-chat-dots-fill fs-5"></i>
+                    </div>
+                    <div>
+                        <h1 class="h5 mb-0 fw-bold text-white">Let's chat!</h1>
+                        <small class="text-success d-flex align-items-center gap-1">
+                            <span class="spinner-grow spinner-grow-sm text-success" role="status" style="width: 8px; height: 8px;"></span>
+                            Live Room: test
+                        </small>
+                    </div>
+                </div>
+            </div>
 
-    <!-- action attribute decides where the form data should be sent after its submission -->
-    <form action="" id="form">
-        <!-- name is used as key when the data is submitted to the server -->
-        <input type="text" name="message">
-    </form>
+            <div id="messages" class="messages-box">
+                </div>
 
-    <div id="messages"></div>
+            <div class="input-area">
+                <form action="" id="form">
+                    <div class="input-group">
+                        <input type="text" name="message" class="form-control" placeholder="Type a message..." autocomplete="off" required>
+                        <button class="btn btn-primary d-flex align-items-center gap-2" type="submit">
+                            <span>Send
+                            </span>
+                            <i class="bi bi-send-fill"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         // window.location.host returns the current host and port of the website. 
@@ -43,9 +155,12 @@
                 let messages = document.getElementById('messages')
 
                 // beforeend => inside the messages element but as the last child
-                messages.insertAdjacentHTML('beforeend', `<div>
-                    <p>${data.message}</p>
+                messages.insertAdjacentHTML('beforeend', `<div class="message-bubble animate-fade-in">
+                    <p class="mb-0">${data.message}</p>
                     </div>`)
+                
+                // Auto-scrolls the message panel to the bottom when a new message arrives
+                messages.scrollTop = messages.scrollHeight;
             }
         }
 
