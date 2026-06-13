@@ -45,6 +45,16 @@ INSTALLED_APPS = [
 
 ASGI_APPLICATION = 'webSockets.asgi.application'
 
+# Channel Layers used to broadcast messages to a group of users
+# One consumer can send messages to another consumer using Channel layers
+CHANNEL_LAYERS = {
+    # default is the name of the channel
+    'default': {
+        # InMemoryChannelLayer => messages are stored in RAM
+        'BACKEND': 'channels.layers.InMemoryChannelLayer'
+    }
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
