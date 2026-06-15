@@ -51,7 +51,7 @@
             background-color: #1f2937;
             border: 1px solid #374151;
             width: fit-content;
-            word-wrap: break-word;
+            overflow-wrap: break-word;
             color: #f3f4f6;
         }
         .input-area {
@@ -104,6 +104,55 @@
         .other-message .message-bubble {
             border-top-left-radius: 0;
         }
+
+        /* Micro-responsiveness optimizations targeting sub-280px screen sizes down to 170px */
+        @media (max-width: 280px) {
+            .chat-container {
+                margin: 5px auto;
+                height: calc(100vh - 10px);
+                border-radius: 8px;
+            }
+            .chat-header {
+                padding: 10px 12px;
+            }
+            /* Shrink avatar layout slightly to gain space */
+            .chat-header .rounded-circle {
+                width: 35px !important;
+                height: 35px !important;
+                margin-right: 8px !important;
+            }
+            .chat-header h1 {
+                font-size: 0.95rem;
+            }
+            .chat-header small {
+                font-size: 0.7rem;
+            }
+            .messages-box {
+                padding: 12px;
+                /* Adjust dynamic viewport heights due to smaller padding profiles */
+                height: calc(100% - 110px); 
+            }
+            .message-bubble {
+                max-width: 85%;
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
+            .input-area {
+                padding: 10px 12px;
+            }
+            .input-group .form-control {
+                padding-left: 12px;
+                font-size: 0.85rem;
+            }
+            /* Safely hide the text string 'Send' to keep standard input bar layouts seamless */
+            .input-group .btn span {
+                display: none;
+            }
+            .input-group .btn {
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+        }
         
     </style>
 </head>
@@ -133,10 +182,9 @@
             <div class="input-area">
                 <form action="" id="form">
                     <div class="input-group">
-                        <input type="text" name="message" class="form-control" placeholder="Type a message..." autocomplete="off" required>
+                        <input type="text" name="message" class="form-control" placeholder="Type..." autocomplete="off" required>
                         <button class="btn btn-primary d-flex align-items-center gap-2" type="submit">
-                            <span>Send
-                            </span>
+                            <span>Send</span>
                             <i class="bi bi-send-fill"></i>
                         </button>
                     </div>
