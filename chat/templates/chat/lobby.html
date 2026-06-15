@@ -182,7 +182,7 @@
             <div class="input-area">
                 <form action="" id="form">
                     <div class="input-group">
-                        <input type="text" name="message" class="form-control" placeholder="Type..." autocomplete="off" required>
+                        <input type="text" id="message-input" name="message" class="form-control" placeholder="Type a message" autocomplete="off" required>
                         <button class="btn btn-primary d-flex align-items-center gap-2" type="submit">
                             <span>Send</span>
                             <i class="bi bi-send-fill"></i>
@@ -257,6 +257,19 @@
             form.reset()
 
         })
+
+        const messageInput = document.getElementById('message-input');
+
+        function updatePlaceholder() {
+            if (window.innerWidth < 320) {
+                messageInput.placeholder = "Type";
+            } else {
+                messageInput.placeholder = "Type a message";
+            }
+        }
+
+        updatePlaceholder(); // Run when page loads
+        window.addEventListener('resize', updatePlaceholder); // Run when screen size changes
 
     </script>
 </body>
