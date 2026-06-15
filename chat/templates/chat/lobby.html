@@ -226,17 +226,32 @@
                 let messages = document.getElementById('messages')
 
                 // beforeend => inside the messages element but as the last child
-                messages.insertAdjacentHTML(
-                    'beforeend',
-                    `
-                    <div class="${isMine ? 'my-message' : 'other-message'}">
-                        <div class="message-bubble">
-                            <p class="mb-0">${data.message}</p>
-                        </div>
-                    </div>
-                    `
-                );
+                // This may lead to XSS security risk (Cross-Site Scripting)
+                // messages.insertAdjacentHTML(
+                //     'beforeend',
+                //     `
+                //     <div class="${isMine ? 'my-message' : 'other-message'}">
+                //         <div class="message-bubble">
+                //             <p class="mb-0">${data.message}</p>
+                //         </div>
+                //     </div>
+                //     `
+                // );
+
+                let wrapper = document.createElement('div');
+                wrapper.className = isMine ? 'my-message' : 'other-message'
+
+                let bubble = document.createElement('div');
+                bubble.className = 'message-bubble'
+
+                let p = document.createElement('p');
+                p.className = 'mb-0'
+                p.textContent = data.message;
                 
+                bubble.appendChild(p);
+                wrapper.appendChild(bubble);
+                messages.appendChild(wrapper);
+
                 // Auto-scrolls the message panel to the bottom when a new message arrives
                 messages.scrollTop = messages.scrollHeight;
             }
